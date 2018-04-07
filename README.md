@@ -7,6 +7,6 @@ Search nearby cafe.
 
 ```
 $ pip install -r requirements.txt
-$ cp ./secret_sample.cfg secret.cfg
+$ cp ./.env.example ./.env
 $ python app.py
 ```
