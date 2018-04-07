@@ -100,7 +100,7 @@ def get_spots(lat, lng):
 def carousel_view(spots, lat, lng):
 
     if len(spots) <= 0:
-        return TextSendMessage(text="うーん...近くにカフェはないね！\nまた違うところで試してね！".strip())
+        return TextSendMessage(text="うーん...近くに今開いているカフェはないね！\nまた違うところで試してね！".strip())
     elif len(spots) > 10:
         spots = random.sample(spots, 10)
     random.Random().shuffle(spots)
@@ -109,10 +109,13 @@ def carousel_view(spots, lat, lng):
         carousel_column = create_carousel_column(spot, lat, lng)
         columns.append(carousel_column)
 
-    view = TemplateSendMessage(
-        alt_text='CloSpots List',
-        template=CarouselTemplate(columns=columns)
-    )
+    view = [
+        TextSendMessage(text="今開いているカフェが見つかったよ！".strip()),
+        TemplateSendMessage(
+            alt_text='CloSpots List',
+            template=CarouselTemplate(columns=columns)
+        )
+    ]
     return view
 
 def create_carousel_column(spot, lat, lng):
