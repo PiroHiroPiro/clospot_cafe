@@ -59,7 +59,7 @@ def handle_message(event):
     line_bot_api.reply_message(
         event.reply_token,
         [
-            TextSendMessage(text="カフェを探すね！\n次は今あなたのいる場所を送ってほしいな！".strip()),
+            TextSendMessage(text="カフェを探すね！\n今あなたのいる場所を送ってほしいな！".strip()),
             TextSendMessage(text="line://nv/location")
         ]
     )
