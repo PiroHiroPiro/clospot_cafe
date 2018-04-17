@@ -1,36 +1,19 @@
 # -*- coding: utf-8 -*-
 
-#  Licensed under the Apache License, Version 2.0 (the "License"); you may
-#  not use this file except in compliance with the License. You may obtain
-#  a copy of the License at
-#
-#       https://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-#  License for the specific language governing permissions and limitations
-#  under the License.
-
 from __future__ import unicode_literals
 
-import os, requests, json, urllib.parse, random
-import sys
+import os, sys, requests, json, urllib.parse, random
 from argparse import ArgumentParser
 
 from flask import Flask, request, abort
-from linebot import (
-    LineBotApi, WebhookHandler
-)
-from linebot.exceptions import (
-    InvalidSignatureError
-)
+from linebot import LineBotApi, WebhookHandler
+from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
     MessageEvent,
-    TextSendMessage, TemplateSendMessage,
     TextMessage, LocationMessage,
-    URITemplateAction,
-    CarouselTemplate, CarouselColumn
+    TextSendMessage, TemplateSendMessage,
+    CarouselTemplate, CarouselColumn,
+    URITemplateAction
 )
 
 app = Flask(__name__)
@@ -42,11 +25,9 @@ handler = WebhookHandler(os.environ['LINE_CHANNEL_SECRET_KEY'])
 def callback():
     signature = request.headers["X-Line-Signature"]
 
-    # get request body as text
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
 
-    # parse webhook body
     try:
         handler.handle(body, signature)
     except InvalidSignatureError:
@@ -125,7 +106,6 @@ def create_carousel_column(spot, lat, lng):
     spot_lng = spot["geometry"]["location"]["lng"]
 
     google_search_url = "https://www.google.co.jp/search?" + urllib.parse.urlencode({"q": spot_name + " " + spot_address})
-    # google_map_route_url = "comgooglemaps://?" + urllib.parse.urlencode({"saddr": str(lat) + "," + str(lng), "daddr": str(spot_lat) + "," + str(spot_lng), "directionsmode": "walking"})
     google_map_route_url = "http://maps.google.com/maps?" + urllib.parse.urlencode({"saddr": str(lat) + "," + str(lng), "daddr": str(spot_lat) + "," + str(spot_lng), "dirflg": "w"})
 
     carousel_column = CarouselColumn(
