@@ -16,10 +16,12 @@ from linebot.models import (
     URITemplateAction
 )
 
+
 app = Flask(__name__)
 
 line_bot_api = LineBotApi(os.environ['LINE_CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['LINE_CHANNEL_SECRET_KEY'])
+
 
 @app.route("/callback", methods=["POST"])
 def callback():
@@ -35,6 +37,7 @@ def callback():
 
     return "OK"
 
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     line_bot_api.reply_message(
@@ -45,6 +48,7 @@ def handle_message(event):
         ]
     )
 
+
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location_message(event):
     lat = event.message.latitude
@@ -54,6 +58,7 @@ def handle_location_message(event):
     view = carousel_view(spots, lat, lng)
 
     line_bot_api.reply_message(event.reply_token,view)
+
 
 def get_spots(lat, lng):
     GOOGLE_PLACES_API_KEY = os.environ['GOOGLE_PLACES_API_KEY']
@@ -78,6 +83,7 @@ def get_spots(lat, lng):
         print("Error : %s" % request_url)
     return spots
 
+
 def carousel_view(spots, lat, lng):
 
     if len(spots) <= 0:
@@ -98,6 +104,7 @@ def carousel_view(spots, lat, lng):
         )
     ]
     return view
+
 
 def create_carousel_column(spot, lat, lng):
     spot_name = spot["name"]
@@ -124,6 +131,7 @@ def create_carousel_column(spot, lat, lng):
         ]
     )
     return carousel_column
+
 
 if __name__ == "__main__":
     arg_parser = ArgumentParser(
