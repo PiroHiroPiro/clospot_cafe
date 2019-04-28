@@ -2,6 +2,8 @@
 
 This is a LINE bot that can search for nearby cafes based on location information.
 
+**Remade using AWS Lambda: [clospot_cafe_lambda](https://github.com/PiroHiroPiro/clospot_cafe_lambda)**
+
 ## Requirement
 
 - Python:3.6
